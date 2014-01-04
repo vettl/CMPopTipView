@@ -34,6 +34,7 @@
 	PointDirection			_pointDirection;
 	CGFloat					_pointerSize;
 	CGPoint					_targetPoint;
+	CGFloat					_padding;
 }
 
 @property (nonatomic, strong, readwrite)	id	targetObject;
@@ -47,20 +48,20 @@
 - (CGRect)bubbleFrame {
 	CGRect bubbleFrame;
 	if (_pointDirection == PointDirectionUp) {
-		bubbleFrame = CGRectMake(_sidePadding, _targetPoint.y+_pointerSize, _bubbleSize.width, _bubbleSize.height);
+		bubbleFrame = CGRectMake(_sidePadding, _targetPoint.y+_pointerSize, _bubbleSize.width+_padding*2, _bubbleSize.height+_padding*2);
 	}
 	else {
-		bubbleFrame = CGRectMake(_sidePadding, _targetPoint.y-_pointerSize-_bubbleSize.height, _bubbleSize.width, _bubbleSize.height);
+		bubbleFrame = CGRectMake(_sidePadding, _targetPoint.y-_pointerSize-_bubbleSize.height-_padding*2, _bubbleSize.width+_padding*2, _bubbleSize.height+_padding*2);
 	}
 	return bubbleFrame;
 }
 
 - (CGRect)contentFrame {
 	CGRect bubbleFrame = [self bubbleFrame];
-	CGRect contentFrame = CGRectMake(bubbleFrame.origin.x + _cornerRadius,
-									 bubbleFrame.origin.y + _cornerRadius,
-									 bubbleFrame.size.width - _cornerRadius*2,
-									 bubbleFrame.size.height - _cornerRadius*2);
+	CGRect contentFrame = CGRectMake(bubbleFrame.origin.x + _cornerRadius + _padding,
+									 bubbleFrame.origin.y + _cornerRadius + _padding,
+									 bubbleFrame.size.width - _cornerRadius*2 - _padding*2,
+									 bubbleFrame.size.height - _cornerRadius*2 - _padding*2);
 	return contentFrame;
 }
 
@@ -404,7 +405,7 @@
 		x_p = x_b + _bubbleSize.width - _cornerRadius - _pointerSize;
 	}
 	
-	CGFloat fullHeight = _bubbleSize.height + _pointerSize + 10.0;
+	CGFloat fullHeight = _bubbleSize.height + _pointerSize + 10.0 + _padding*2;
 	CGFloat y_b;
 	if (_pointDirection == PointDirectionUp) {
 		y_b = _topMargin + pointerY;
@@ -584,6 +585,7 @@
 		_pointerSize = 12.0;
 		_sidePadding = 2.0;
         _borderWidth = 1.0;
+        _padding = 0;
 		
 		self.textFont = [UIFont boldSystemFontOfSize:14.0];
 		self.textColor = [UIColor whiteColor];
